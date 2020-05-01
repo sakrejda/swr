@@ -1,4 +1,4 @@
 library(testthat)
-library(stanwriter)
+library(swr)
 
-test_check("stanwriter")
+test_check("swr")

@@ -1,14 +1,14 @@
 
-# stanwriter
+# swr
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of stanwriter is to ...
+The goal of swr is to ...
 
 ## Installation
 
-You can install the released version of stanwriter from [github](https://github.com/sakrejda/stanwriter) with:
+You can install the released version of swr from [github](https://github.com/sakrejda/swr) with:
 
 ``` r
 remotes::install_github("sakrejda/standwriter")
@@ -19,7 +19,7 @@ remotes::install_github("sakrejda/standwriter")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(stanwriter)
+library(swr)
 ## basic example code
 ```
 
