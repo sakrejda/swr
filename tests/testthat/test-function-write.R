@@ -10,8 +10,13 @@ swr::Transforms$new(
   offset = swr::Offset$new(12),
   swr::Scale = scale$new(0.03)
 )$textify()
-swr::RealType$new("X", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(1)), Z * 7)
-swr::IntType$new("K", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), Z * 8)
+swr::RealType$new("X", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(1)), Z * 7)$textify()
+swr::IntType$new("K", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), Z * 8)$textify()
 
-swr::transforms()
-swr::int("Z")
+swr::transforms()$textify()
+swr::int("Z", value = K + 1)$textify()
+swr::real("Z", value = K + 3)$textify()
+
+
+swr::Dimensions$new()$textify()
+swr::Dimensions$new(3, 6, X, Z * 2)$textify()

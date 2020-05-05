@@ -101,16 +101,16 @@ Unspecified = R6::R6Class("Unspecified", inherit = Transform,
 Transforms = R6::R6Class("Transforms",
   public = list(
     initialize = function(lb, ub, offset, scale) {
-      if (!missing(lb)) {
+      if (!missing(lb) && !is.null(lb)) {
         private$lb_ = lb
       } 
-      if (!missing(ub)) {
+      if (!missing(ub) && !is.null(ub)) {
         private$ub_ = ub
       }
-      if (!missing(offset)) {
+      if (!missing(offset) && !is.null(offset)) {
         private$offset_ = offset
       } 
-      if (!missing(scale)) {
+      if (!missing(scale) && !is.null(scale)) {
         private$scale_ = scale
       }
     },
