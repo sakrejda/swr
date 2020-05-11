@@ -36,3 +36,12 @@ string_order = function(s) {
   return(s)
 }
 
+textify.numeric = function(x, .hint = "vector") {
+  enq = rlang::enquo(x)
+  v = x
+  k = length(x)
+  if (.hint == "vector") {
+  } else if (.hint == "array") {
+
+  }
+}

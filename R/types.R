@@ -16,10 +16,10 @@ CoreType = R6::R6Class("CoreType", inherit = BareType,
       }
       if (!is.null(transforms)) {
         private$transforms_ = transforms
-      } 
+      }
       if (!is.null(size)) {
-        private$size_ = rlang::enquo(size)
-      } 
+        private$size_ = size
+      }
       if (!is.null(dimensions)) {
         private$dimensions_ = dimensions
       }
@@ -27,9 +27,7 @@ CoreType = R6::R6Class("CoreType", inherit = BareType,
     },
     textify = function() { 
       s = paste0(private$type_, private$transforms_$textify())
-      if (!identical(rlang::quo(), private$size_)) {
-        s = paste0(s, "[", string_order(stringify(private$size_)), "]")
-      }
+      s = paste0(s, private$size_$textify())
       s = paste0(s, " ", private$name_)
       s = paste0(s, private$dimensions_$textify())
       if (!identical(rlang::quo(), private$value_) && 
@@ -38,24 +36,30 @@ CoreType = R6::R6Class("CoreType", inherit = BareType,
       }
       s = paste0(s, ";")
       return(s)
+    },
+    set_value = function(x) {
+      private$value_ = rlang::enquo(x)
+      return(self)
     }
   ),
   private = list(
     name_ = "",
     type_ = "",
     transforms_ = Transforms$new(),
-    size_ = rlang::quo(),
+    size_ = Dimensions$new(),
     dimensions_ = Dimensions$new(),
     value_ = rlang::quo()
   )
 )
 
+
 #' @export
 IntType = R6::R6Class("IntType", inherit = CoreType,
   public = list(
-    initialize = function(name, transforms, value = NULL) {
+    initialize = function(name, transforms = swr::transforms(), dimensions = swr::dimensions(), value = NULL) {
       val = rlang::enquo(value)
-      super$initialize(name, "int", transforms, dimensions = NULL, value = !!val)
+      dim = rlang::enquo(dimensions)
+      super$initialize(name, "int", transforms, dimensions = dimensions, value = !!val)
     }
   )
 )
@@ -63,20 +67,32 @@ IntType = R6::R6Class("IntType", inherit = CoreType,
 #' @export
 RealType = R6::R6Class("RealType", inherit = CoreType,
   public = list(
-    initialize = function(name, transforms, value = NULL) {
+    initialize = function(name, transforms = swr::transforms(), dimensions = swr::dimensions(), value = NULL) {
       val = rlang::enquo(value)
-      super$initialize(name, "real", transforms, dimensions = NULL, value = !!val)
+      dim = rlang::enquo(dimensions)
+      super$initialize(name, "real", transforms, dimensions = dimensions, value = !!val)
     }
   )
 )
 
 #' @export
-IntTypeArray = R6::R6Class("IntTypeArray", inherit = CoreType,
+VectorType = R6::R6Class("VectorType", inherit = CoreType,
   public = list(
-    initialize = function(name, transforms, dimensions = NULL, value = NULL) {
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
       val = rlang::enquo(value)
-      dim = rlang::enquo(dimensions)
-      super$initialize(name, "int", transforms, dimensions = dimensions, value = !!val)
+      super$initialize(name, "vector", transforms, size, dimensions, value = !!val)
     }
   )
 )
+
+#' @export
+RowVectorType = R6::R6Class("RowVectorType", inherit = CoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      super$initialize(name, "row_vector", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+

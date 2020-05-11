@@ -32,15 +32,72 @@ transforms = function(
 }
 
 #' @export
-int = function(name, transforms = swr::transforms(), value = NULL) {
+dimensions = function(...) swr::Dimensions$new(...)
+
+#' @export 
+int = function(
+  name, 
+  transforms = swr::transforms(), 
+  dimensions = swr::dimensions(),
+  value = NULL
+) {
   val = rlang::enquo(value)
-  o = swr::IntType$new(name, transforms, !!val)
+  o = swr::IntType$new(name, transforms, dimensions, !!val)
   return(o)
 }
 
-#' @export
-real = function(name, transforms = swr::transforms(), value = NULL) {
+#' @export 
+real = function(
+  name, 
+  transforms = swr::transforms(), 
+  dimensions = swr::dimensions(),
+  value = NULL
+) {
   val = rlang::enquo(value)
-  o = swr::RealType$new(name, transforms, !!val)
+  o = swr::RealType$new(name, transforms, dimensions, !!val)
   return(o)
 }
+
+#' @export 
+vector = function(
+  name, 
+  transforms = swr::transforms(), 
+  size = swr::dimensions(0),
+  dimensions = swr::dimensions(),
+  value = NULL
+) {
+  val = rlang::enquo(value)
+  if (size$ndims != 1) {
+    stop("A vector's size must be a scalar.")
+  }
+  o = swr::VectorType$new(name, transforms, size, dimensions, !!val)
+  return(o)
+}
+
+#' @export 
+row_vector = function(
+  name, 
+  transforms = swr::transforms(), 
+  size = swr::dimensions(0),
+  dimensions = swr::dimensions(),
+  value = NULL
+) {
+  val = rlang::enquo(value)
+  if (size$ndims != 1) {
+    stop("A row_vector's size must be a scalar.")
+  }
+  o = swr::RowVectorType$new(name, transforms, size, dimensions, !!val)
+  return(o)
+}
+
+
+#' @export
+set = function(.data, x) {
+  # FIXME: needs dimension checks!
+  x_ = rlang::enquo(x)
+  .data$set_value(!!x_) 
+  return(.data)
+}
+
+
+
