@@ -76,7 +76,25 @@ RealType = R6::R6Class("RealType", inherit = CoreType,
 )
 
 #' @export
-VectorType = R6::R6Class("VectorType", inherit = CoreType,
+VectorCoreType = R6::R6Class("VectorCoreType", inherit = CoreType,
+  public = list(
+    initialize = function(name, type = "vector", transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      if (size$ndims != 1) {
+        stop("A vector's size must be a scalar.")
+      }
+      super$initialize(name, type, transforms, size, dimensions, value = !!val)
+    },
+    get = function(i) {
+      ii = rlang::enquo(i)
+      ### FIXME: get the brackets in there and the indexes....
+      x = swr::real("", transforms = private$transforms_, value = private$name)
+    }
+  )
+)
+
+#' @export
+VectorType = R6::R6Class("VectorType", inherit = VectorCoreType,
   public = list(
     initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
       val = rlang::enquo(value)
@@ -86,7 +104,7 @@ VectorType = R6::R6Class("VectorType", inherit = CoreType,
 )
 
 #' @export
-RowVectorType = R6::R6Class("RowVectorType", inherit = CoreType,
+RowVectorType = R6::R6Class("RowVectorType", inherit = VectorCoreType,
   public = list(
     initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
       val = rlang::enquo(value)
@@ -95,4 +113,104 @@ RowVectorType = R6::R6Class("RowVectorType", inherit = CoreType,
   )
 )
 
+#' @export
+SimplexType = R6::R6Class("SimplexType", inherit = VectorCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      super$initialize(name, "simplex", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
 
+#' @export
+UnitVectorType = R6::R6Class("UnitVectorType", inherit = VectorCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      super$initialize(name, "unit_vector", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' @export
+OrderedType = R6::R6Class("OrderedType", inherit = VectorCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      super$initialize(name, "ordered", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' @export
+PositiveOrderedType = R6::R6Class("PositiveOrderedType", inherit = VectorCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      super$initialize(name, "positive_ordered", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' @export
+MatrixCoreType = R6::R6Class("MatrixType", inherit = CoreType,
+  public = list(
+    initialize = function(name, type = "matrix", transforms = swr::transforms(), size = swr::dimensions(0, 0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      super$initialize(name, type, transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' @export
+MatrixType = R6::R6Class("MatrixType", inherit = MatrixCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0, 0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      if (size$ndims != 2) {
+        stop("A matrix's size must be a 2-vector.")
+      }
+      super$initialize(name, "matrix", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' @export
+CovMatrixType = R6::R6Class("CovMatrixType", inherit = MatrixCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0, 0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      if (size$ndims != 1) {
+        stop("A covariance matrix's size must be a scalar.")
+      }
+      super$initialize(name, "cov_matrix", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' @export
+CorrMatrixType = R6::R6Class("CorrMatrixType", inherit = MatrixCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0, 0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      if (size$ndims != 1) {
+        stop("A matrix's size must be a 2-vector.")
+      }
+      super$initialize(name, "corr_matrix", transforms, size, dimensions, value = !!val)
+    }
+  )
+)
+
+#' export
+CholeskyFactorCovType = R6::R6Class("CholeskyFactorCovType", inherit = MatrixCoreType,
+  public = list(
+    initialize = function(name, transforms = swr::transforms(), size = swr::dimensions(0, 0), dimensions = swr::dimensions(), value = NULL) {
+      val = rlang::enquo(value)
+      if (size$ndims < 1 || size$ndims > 2) {
+        stop("A matrix's size must be a scalar or 2-vector.")
+      }
+      super$initialize(name, "cholesky_factor_cov", transforms, size, dimensions, value = !!val)
+    }
+  )
+)

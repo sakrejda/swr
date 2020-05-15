@@ -67,6 +67,20 @@ test_that("generating types directly works", {
     size = swr::dimensions(3 * A), 
     value = Z / 3)
   testthat::expect_equal(X2$textify(), "vector[3 * A] X2 = Z / 3;")
+  X3 = swr::RowVectorType$new("X3", 
+    swr::Transforms$new(), 
+    size = swr::dimensions(3 * A), 
+    value = Z / 3)
+  testthat::expect_equal(X3$textify(), "row_vector[3 * A] X3 = Z / 3;")
+  X4 = swr::SimplexType$new("X4", 
+    swr::Transforms$new(), 
+    size = swr::dimensions(3 * A), 
+    value = Z / 3)
+  testthat::expect_equal(X4$textify(), "simplex[3 * A] X4 = Z / 3;")
+  A = swr::MatrixType$new("A",
+    size = swr::dimensions(33,2 / Z),
+    value = B * 2)
+  testthat::expect_equal(A$textify(), "matrix[33, 2 / Z] A = B * 2;")
 })
 
 test_that("api works as intended for integers", {
@@ -103,3 +117,64 @@ test_that("api works as intended for row_vectors", {
   testthat::expect_error(
     swr::row_vector("Q", size = swr::dimensions(3 * Z / 4, 4)), class = "simpleError")
 })  
+
+test_that("api works as intended for simplexes", {
+  swr::simplex("Q", size = swr::dimensions(3 * Z / 4))$textify()
+  swr::simplex("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4), value = erm / 4)$textify()
+  testthat::expect_error(swr::simplex("Q", size = swr::dimensions(3 * Z / 4, 4))$textify())
+})
+
+test_that("api works as intended for unit_vectors", {
+  swr::unit_vector("Q", size = swr::dimensions(3 * Z / 4))$textify()
+  swr::unit_vector("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4), value = erm / 4)$textify()
+  testthat::expect_error(swr::unit_vector("Q", size = swr::dimensions(3 * Z / 4, 4))$textify())
+})
+
+test_that("api works as intended for ordereds", {
+  swr::ordered("Q", size = swr::dimensions(3 * Z / 4))$textify()
+  swr::ordered("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4), value = erm / 4)$textify()
+  testthat::expect_error(swr::ordered("Q", size = swr::dimensions(3 * Z / 4, 4))$textify())
+})
+
+test_that("api works as intended for positive_ordereds", {
+  swr::positive_ordered("Q", size = swr::dimensions(3 * Z / 4))$textify()
+  swr::positive_ordered("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4), value = erm / 4)$textify()
+  testthat::expect_error(swr::positive_ordered("Q", size = swr::dimensions(3 * Z / 4, 4))$textify())
+})
+
+
+test_that("matrix's api works as intended", {
+  swr::matrix("Q", size = swr::dimensions(3 * Z / 4, 100))$textify()
+  swr::matrix("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4, 2), value = erm / 4)$textify()
+  testthat::expect_error(swr::matrix("Q", size = swr::dimensions(3 * Z / 4))$textify())
+})
+
+test_that("cov_matrix's api works as intended", {
+  swr::cov_matrix("Q", size = swr::dimensions(3 * Z / 4))$textify()
+  swr::cov_matrix("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4), value = erm / 4)$textify()
+  testthat::expect_error(swr::cov_matrix("Q", size = swr::dimensions(3 * Z / 4,2))$textify())
+})
+
+test_that("corr_matrix's api works as intended", {
+  swr::corr_matrix("Q", size = swr::dimensions(3 * Z / 4))$textify()
+  swr::corr_matrix("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(2), value = erm / 4)$textify()
+  testthat::expect_error(swr::corr_matrix("Q", size = swr::dimensions(3 * Z / 4,3))$textify())
+})
+
+test_that("cholesky_factor_cov_matrix's api works as intended", {
+  swr::cholesky_factor_cov("Q", size = swr::dimensions(3 * Z / 4, 100))$textify()
+  swr::cholesky_factor_cov("Q", swr::Transforms$new(swr::LowerBound$new(0), swr::UpperBound$new(2)), 
+                        size = swr::dimensions(3 * Z / 4, 2), value = erm / 4)$textify()
+  testthat::expect_error(swr::cholesky_factor_cov("Q", size = swr::dimensions(3 * Z / 4, 3, 5))$textify())
+})
+
+
+
+
