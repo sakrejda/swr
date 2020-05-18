@@ -18,7 +18,11 @@ string_order = function(s) {
     s = paste(string_order(s[[2]]), s[[1]], string_order(s[[3]]))
     return(s)
   } else if (s[[1]] %in% unary_postfix_op()) {
-    s = paste0("(", s[[2]], ")[", paste0(purrr::map(s[3:length(s)], string_order), collapse = ", "), "]")
+    if (length(s[[2]]) == 1) {
+      s = paste0(s[[2]], "[", paste0(purrr::map(s[3:length(s)], string_order), collapse = ", "), "]")
+    } else {
+      s = paste0("(", s[[2]], ")[", paste0(purrr::map(s[3:length(s)], string_order), collapse = ", "), "]")
+    }
     return(s)
   }
   s = paste0(s[[1]], "(", paste0(purrr::map(s[2:length(s)], string_order), collapse = ", "), ")")

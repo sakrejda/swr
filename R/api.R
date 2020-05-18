@@ -1,6 +1,6 @@
 
 #' @export
-stringify = function(x) {
+stringify_declaration = function(x) {
   if ("Transform" %in% class(x)) {
     o = x$textify()
   } else if ("BareType" %in% class(x)) {
@@ -14,7 +14,6 @@ stringify = function(x) {
   } else {
     stop("Failed to stringify")
   }
-  o = string_order(o) 
   return(o)
 }
 
