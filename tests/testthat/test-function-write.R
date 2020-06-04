@@ -1,6 +1,6 @@
 test_that("multiplication works", {
   o = rlang::quo(a + b * -c + f(g))
-  s = swr::string_order(swr::stringify(o))
+  s = swr::stringify(o)
   testthat::expect_equal(s, "a + b * -c + f(g)")
 })
 
@@ -66,21 +66,21 @@ test_that("generating types directly works", {
     swr::Transforms$new(), 
     size = swr::dimensions(3 * A), 
     value = Z / 3)
-  testthat::expect_equal(X2$textify(), "vector[3 * A] X2 = Z / 3;")
+  testthat::expect_equal(X2$textify(), "vector[3 * A] X2 = Z/3;")
   X3 = swr::RowVectorType$new("X3", 
     swr::Transforms$new(), 
     size = swr::dimensions(3 * A), 
     value = Z / 3)
-  testthat::expect_equal(X3$textify(), "row_vector[3 * A] X3 = Z / 3;")
+  testthat::expect_equal(X3$textify(), "row_vector[3 * A] X3 = Z/3;")
   X4 = swr::SimplexType$new("X4", 
     swr::Transforms$new(), 
     size = swr::dimensions(3 * A), 
     value = Z / 3)
-  testthat::expect_equal(X4$textify(), "simplex[3 * A] X4 = Z / 3;")
+  testthat::expect_equal(X4$textify(), "simplex[3 * A] X4 = Z/3;")
   A = swr::MatrixType$new("A",
     size = swr::dimensions(33,2 / Z),
     value = B * 2)
-  testthat::expect_equal(A$textify(), "matrix[33, 2 / Z] A = B * 2;")
+  testthat::expect_equal(A$textify(), "matrix[33, 2/Z] A = B * 2;")
 })
 
 test_that("api works as intended for integers", {

@@ -32,7 +32,7 @@ CoreType = R6::R6Class("CoreType", inherit = BareType,
       s = paste0(s, private$dimensions_$textify())
       if (!identical(rlang::quo(), private$value_) && 
           !identical(rlang::quo(NULL), private$value_)) {
-        s = paste0(s, " = ", string_order(stringify(private$value_)))
+        s = paste0(s, " = ", stringify(private$value_))
       }
       s = paste0(s, ";")
       return(s)
@@ -86,9 +86,11 @@ VectorCoreType = R6::R6Class("VectorCoreType", inherit = CoreType,
       super$initialize(name, type, transforms, size, dimensions, value = !!val)
     },
     get = function(i) {
-      ii = rlang::enquo(i)
-      ### FIXME: get the brackets in there and the indexes....
-      x = swr::real("", transforms = private$transforms_, value = private$name)
+      stop("Not implemented")
+      ii = rlang::enquo(i) %>% rlang::quo_get_expr() %>% rlang::expr_text(width = 80)
+      val_expr = paste0(private$name_, "[", ii, "]") %>% rlang::parse_expr()
+      x = swr::real("NAME__", transforms = private$transforms_, value = val_expr)
+      return(x)
     }
   )
 )

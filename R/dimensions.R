@@ -12,7 +12,7 @@ Dimensions = R6::R6Class("Dimensions",
     textify = function() {
       if (private$ndims_ == 0)
         return(NULL)
-      s = purrr::map(private$dims_, ~ string_order(stringify(.x)))
+      s = purrr::map(private$dims_, ~ stringify(.x))
       s = paste0(s, collapse = ', ')
       s = paste0("[", s, "]")
       return(s)

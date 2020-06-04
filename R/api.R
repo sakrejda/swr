@@ -1,6 +1,6 @@
 
 #' @export
-stringify_declaration = function(x) {
+stringify = function(x) {
   if ("Transform" %in% class(x)) {
     o = x$textify()
   } else if ("BareType" %in% class(x)) {
@@ -10,7 +10,8 @@ stringify_declaration = function(x) {
   } else if (rlang::is_syntactic_literal(x)) {
     o = as.character(x)
   } else if (rlang::is_call(x)) {
-    o = purrr::map(x, stringify)
+    o = rlang::expr_text(x, width = 80) %>%
+      substr(2, nchar(.))
   } else {
     stop("Failed to stringify")
   }
@@ -26,4 +27,4 @@ set = function(.data, x) {
 }
 
 #' @export
-`[.MyClass` = function(e1, e2) e1$get(e2)
+`[.CoreType` = function(e1, ...) e1$get(...)

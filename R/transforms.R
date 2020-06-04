@@ -10,7 +10,7 @@ LowerBound = R6::R6Class("LowerBound", inherit = Transform,
       }
     },
     textify = function() {
-      s = private$lb_ %>% stringify %>% string_order
+      s = private$lb_ %>% stringify()
       s = paste0("lower=", s)
       return(s)
     },
@@ -32,7 +32,7 @@ UpperBound = R6::R6Class("LowerBound",  inherit = Transform,
       }
     },
     textify = function() {
-      s = private$ub_ %>% stringify %>% string_order
+      s = private$ub_ %>% stringify()
       s = paste0("upper=", s)
       return(s)
     },
@@ -54,7 +54,7 @@ Offset = R6::R6Class("Offset", inherit = Transform,
       }
     },
     textify = function() {
-      s = private$offset_ %>% stringify %>% string_order
+      s = private$offset_ %>% stringify()
       s = paste0("offset=", s)
       return(s)
     },
@@ -76,7 +76,7 @@ Scale = R6::R6Class("Scale", inherit = Transform,
       }
     },
     textify = function() {
-      s = private$scale_ %>% stringify %>% string_order
+      s = private$scale_ %>% stringify()
       s = paste0("scale=", s)
       return(s)
     },
