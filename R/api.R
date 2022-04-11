@@ -5,6 +5,8 @@ stringify = function(x) {
     o = x$textify()
   } else if ("BareType" %in% class(x)) {
     o = x$textify()
+  } else if ("BareStatementType" %in% class(x)) {
+    o = x$textify()
   } else if (rlang::is_symbol(x)) {
     o = as.character(x)
   } else if (rlang::is_syntactic_literal(x)) {
